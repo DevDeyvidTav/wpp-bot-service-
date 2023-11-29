@@ -3,8 +3,7 @@ import { create, Whatsapp, Message } from 'venom-bot';
 import venom from 'venom-bot';
 import { join } from 'path';
 import { readFile } from 'fs';
-import mime from 'mime'
-import { testClient } from './client';
+
 
 
 const app: Application = express();
@@ -59,12 +58,6 @@ app.get('/wpp-check-auth', async (req: Request, res: Response) => {
     res.status(500).json({ error: error });
     return;
   }
-
-
-
-  // desabilitar algumas coisas para performatizar o check auth | gerar qr 6s
-  //                                                            | dizer que está conectado 17s
-  //                                                            | desabilitar verificação da versão do nodeJS (pendente...)
 
 
 
@@ -131,9 +124,8 @@ app.post('/wpp-send-message', async (req: Request, res: Response) => {
 })
 app.post('/wpp-send-pdf', async (req: Request, res: Response) => {
   const { session_name, fileType, msg } = req.body
-  const newClient = testClient
   try {
-    if (newClient && fileType === 'pdf') {
+    if (client && fileType === 'pdf') {
       readFile('./src/teste.pdf', "base64", async (err, data) => {
         if (err) {
           return console.log(err)
